@@ -23,5 +23,8 @@ Controls the camera's position and orientation based on mouse input. Will also c
 ## PlanetInfo.cs and MeteoroidInfo.cs
 Scripts that must be assigned to each planet and meteoroid. They store values about the planet/meteoroid and calculates the body's current position based on the time and the 6 orbital elements.
 
+## CSVReader.cs and DateHelper.cs
+These are helper scripts that will read data from a CSV file and perform calculations concerning the date respectively.
+
 ## All the rest
 All the other scripts are simple and must be assigned to specific GameObjects or GUI elements. More information about them can be found in the documentation (TO DO).
