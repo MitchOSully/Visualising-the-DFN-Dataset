@@ -30,7 +30,7 @@ public class ScreenMaster : MonoBehaviour
       public GameObject pauseButton;
       public GameObject playButton;
       public GameObject timeSlider;
-    public GameObject BottomRightPanel;
+    public GameObject bottomRightPanel;
       public GameObject hideButton;
       public GameObject showButton;
       public GameObject tutorialButton;
@@ -63,19 +63,11 @@ public class ScreenMaster : MonoBehaviour
      * Called by the Start() function in MasterScript.cs
      * ************************************************************/
     {
-        //Deactivate necessary GUI elements
-        playButton.SetActive(false);
-        showButton.SetActive(false);
-        tutorialPanel.SetActive(false);
         if (!plotterScript.showMeteorLines) //If meteor lines deactivated
         {
             meteorLinesPanel.SetActive(false);
             meteorLinesGonePanel.SetActive(true);
         }
-
-        //Make date input field and year slider non-interractable
-        dateInput.GetComponent<InputField>().interactable = false;
-        timeSlider.GetComponent<Slider>().interactable = false;
     }
 
     public void update()
@@ -83,23 +75,23 @@ public class ScreenMaster : MonoBehaviour
     * Called by the Update() function in MasterScript.cs
     **************************************************************/
     {
-        double daysElapsed = plotterScript.daysElapsed;
+        double currJD = helper.JD2000 + plotterScript.daysElapsed;
         bool paused = plotterScript.paused;
         InputField date;
 
         if (!paused) //If game is running, update time every frame
         {
             date = dateInput.GetComponent<InputField>();
-            date.text = helper.daysToDate(daysElapsed); //Update date text
+            date.text = helper.JDToDateString(currJD); //Update date text
 
-            timeSlider.GetComponent<Slider>().value = (float)(helper.JD2000 + daysElapsed);
+            timeSlider.GetComponent<Slider>().value = (float)(currJD);
                                            //Update time slider on pause screen
         }
         else if (usingTimeSlider) //If game is paused but we're changing timeSlider value, 
                                   //update time every frame
         {
             date = dateInput.GetComponent<InputField>();
-            date.text = helper.daysToDate(daysElapsed); //Update date text
+            date.text = helper.JDToDateString(currJD); //Update date text
         }
         //else if game is paused and we're not using slider, do nothing 
     }
@@ -193,11 +185,11 @@ public class ScreenMaster : MonoBehaviour
     *******************************************************************/
     {
         Text speedText;
-		double newDaysPerFrame;
+	double newDaysPerFrame;
 
-		//Scale according to equation (x/5)^5
-		//newDaysPerFrame = Math.Pow((double)inSliderValue, 5) / 5;
-		newDaysPerFrame = inSliderValue;
+	//Scale according to equation (x/5)^5
+	//newDaysPerFrame = Math.Pow((double)inSliderValue, 5) / 5;
+	newDaysPerFrame = inSliderValue;
 
         //Update speed 
         plotterScript.daysPerFrame = newDaysPerFrame;
@@ -219,7 +211,7 @@ public class ScreenMaster : MonoBehaviour
     /*********************************************
     * Called as soon as the user makes a change to the date input box,
     *even if they haven't pressed 'enter'. 
-    * If input is valid, it changes the value of the year slider.
+    * If input is valid, it changes the value of the time slider.
     **********************************************/
     {
         string[] dateElements;

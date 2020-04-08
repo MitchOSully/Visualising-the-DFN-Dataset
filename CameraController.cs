@@ -40,7 +40,7 @@ public class CameraController : MonoBehaviour
     {
         cameraTransform = this.transform;
         parentTransform  = this.transform.parent;
-	}
+    }
 
     public void update()
     /**************************************************************
@@ -48,7 +48,7 @@ public class CameraController : MonoBehaviour
     * Calls updateLocalRotation() and updateCamDistance() if the necessary user-commands are made
     ********************************************************/
     {
-		/*Moving parent to new pivot************************/
+	/*Moving parent to new pivot************************/
         if (Vector3.Distance(parentTransform.position, pivot.transform.position) < 1)
         //If parent and pivot are very close
         {
@@ -89,7 +89,7 @@ public class CameraController : MonoBehaviour
         {
             animateZoom();
         }
-	}
+    }
 
     private void moveParent()
     /******************************************************

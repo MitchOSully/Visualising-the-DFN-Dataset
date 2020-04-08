@@ -128,7 +128,7 @@ public class InteractWithObject : MonoBehaviour
             {
                 planetInfo = this.GetComponent<PlanetInfo>();
                 infoText = planetInfo.infoText;
-                citation = "Cite: https://solarsystem.gov/planet-compare/\n";
+                citation  = "Cite: https://solarsystem.gov/planet-compare/\n";
                 citation += "        https://ssd.jpl.nasa.gov/horizons.cgi";
             }
 

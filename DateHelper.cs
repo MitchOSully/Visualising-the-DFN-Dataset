@@ -7,9 +7,10 @@ using UnityEngine.UI;
 public class DateHelper : MonoBehaviour
 /************************************************************
 * Contains methods concerned with manipulating date and time
-* Used by ScreenMaster (extensively) and BodyPlotter (lil bit)
+* Used by ScreenMaster (extensively), BodyPlotter (lil bit) and MeteoroidInfo (one
+*time).
 * AUTHOR: Mitchell O'Sullivan
-* LAST UPDATED: 24/2/2020
+* LAST UPDATED: 5/4/2020
 *************************************************************/
 {
     /***************************
@@ -17,7 +18,6 @@ public class DateHelper : MonoBehaviour
     ****************************/
     public double JD2000; //JD of start date for moving bodies (1/1/2000)
     public double JD2020; //JD of finish date for moving bodies (31/12/2020)
-    public double JDOrbitStart; //JD of start date for orbit lines (1/1/1800)
 
     public void start()
     /**********************************************
@@ -26,7 +26,6 @@ public class DateHelper : MonoBehaviour
     {
         JD2000 = dateToJD(new int[] { 1, 1, 2000 });
         JD2020 = dateToJD(new int[] {31,12, 2020 });
-        JDOrbitStart = JD2000 - 60183; //Neptune takes 60182 days to fully orbit the sun
     }
 
     public string getDateErrorMessage(string[] dateElements)
@@ -69,7 +68,7 @@ public class DateHelper : MonoBehaviour
     public double dateToJD(int[] dateElements)
     /*******************************************************************
     * Converts a Gregorian Calendar date, represented by an array of ints, 
-    *into a Julian Day (float). 
+    *into a Julian Day (double). 
     * NOTE: dateElements = {<day>, <month>, <year>}
     * Calculation taken from Jean Meeus' "Astronomical Algorithms, 2nd ed." p61
     ********************************************************************/
@@ -143,45 +142,25 @@ public class DateHelper : MonoBehaviour
         return dateElements;
     }
 
-    public string daysToDate(double daysElapsed)
+    public string JDToDateString(double JD)
     /*************************************************************************
-    * Converts daysElapsed (days since 01/01/1800) to a date string in the format:
+    * Converts the imported Julian Day to a date string in the format:
     * "<day>/<month>/<year>
     **************************************************************************/
     {
         string dateString; //Return value
         int[] date; //date[0] == day, date[1] == month, date[2] == year
-        double currJD; //current Julian day
 
-        currJD = JD2000 + daysElapsed; //Add daysElapsed to original JD to get current JD
-        date = JDToDate(currJD); //Use other function to get date elements
-
-        //Convert to string:
+	//Use other function to get date elements
+        date = JDToDate(JD); 
+        
+	//Convert to string:
         dateString = date[0].ToString("00") + "/" + date[1].ToString("00") + "/" + date[2];
 
         return dateString;
     }
 
     /*-----HELPER FUNCTIONS FOR THE HELPER CLASS-------------------*/
-
-    private bool isALeapYear(int year)
-    /******************************************
-    * Returns true if year is a leap year, and false if not
-    * For a year to be a leap one, it must satisfy 3 conditions:
-    * 1. Is a multiple of 4
-    * 2. BUT is not a multiple of 100
-    * 3. UNLESS is a multiple of 400 
-    * https://www.timeanddate.com/date/leapyear.html
-    *******************************************/
-    {
-        bool verdict = false;
-
-        if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0)
-        //   goes into 4     BUT not into 100    UNLESS goes into 400
-            verdict = true;
-
-        return verdict;
-    }
 
     private bool daysValid(int day, int month, int year)
     /******************************************
@@ -190,7 +169,7 @@ public class DateHelper : MonoBehaviour
     {
         int daysInMonth = calcDaysInMonth(month, year); //Call helper function
 
-        return (0 < day && day <= daysInMonth);
+        return (1 <= day && day <= daysInMonth);
     }
 
     private int calcDaysInMonth(int month, int year)
@@ -217,5 +196,24 @@ public class DateHelper : MonoBehaviour
         }
 
         return daysInMonth;
+    }
+    
+    private bool isALeapYear(int year)
+    /******************************************
+    * Returns true if year is a leap year, and false if not
+    * For a year to be a leap one, it must satisfy 3 conditions:
+    * 1. Is a multiple of 4
+    * 2. BUT is not a multiple of 100
+    * 3. UNLESS is a multiple of 400 
+    * https://www.timeanddate.com/date/leapyear.html
+    *******************************************/
+    {
+        bool verdict = false;
+
+        if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0)
+        //   goes into 4     BUT not into 100    UNLESS goes into 400
+            verdict = true;
+
+        return verdict;
     }
 }

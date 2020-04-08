@@ -151,7 +151,7 @@ public class BodyPlotter : MonoBehaviour
         double[] elements; //Orbital elements of an meteoroid
         int numBadMeteors = 0; //Number of meteoroids we don't want to plot
         int newIdx; //The current index in the array, accounting for the fact that bad meteors are not added
-        double vu0; //True anomaly at time of detection for a single meteoroid
+        double nu0; //True anomaly at time of detection for a single meteoroid
         GameObject[] tempMeteoroidList; //Temporary array used when resizing meteoroid list
         int newLength; //Length of meteoroid list without all the bad meteoroids
 
@@ -198,7 +198,7 @@ public class BodyPlotter : MonoBehaviour
                 //Name:
                 meteoroids[newIdx].transform.name = meteoroidList[ii]["codename"].ToString();
                 //Initial true anomaly (deg) - need for M0 calculation:
-                vu0 = Convert.ToDouble(meteoroidList[ii]["true_anomaly"]);
+                nu0 = Convert.ToDouble(meteoroidList[ii]["true_anomaly"]);
                 //Date detected (Julian Day):
                 meteorInfo.dayDetected = Convert.ToDouble(meteoroidList[ii]["JD"]);
                 //Values for info panel:
@@ -210,7 +210,7 @@ public class BodyPlotter : MonoBehaviour
 
             /*And now we can work with what we've got********************************/
             /*Set initial mean anomaly (M0) and constants A, B, C, a, b, c***********/
-                meteorInfo.setM0(vu0);
+                meteorInfo.setM0(nu0);
                 meteorInfo.setConstants();
 
             /*Set text to display when right-clicked on the meteoroid****************/
@@ -218,7 +218,7 @@ public class BodyPlotter : MonoBehaviour
 
             /*Set position of meteoroid at date of detection*************************/
                 meteorInfo.plotScale = plotScale;//Need plotScale for calculating positions
-                meteorInfo.calculateCrashPosition(vu0);
+                meteorInfo.calculateCrashPosition(nu0);
 
             /*Instantiate meteoroid in its initial position*************************/
                 meteoroids[newIdx].transform.position = meteorInfo.getPositionAt(helper.JD2000);

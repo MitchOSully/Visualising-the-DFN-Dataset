@@ -14,7 +14,7 @@ public class PlanetInfo : MonoBehaviour
     /************************************
     * CLASS FIELDS
     *************************************/
-    public double[] elements = new double[6]; //Orbital elements of previous frame
+    public double[] elements = new double[6]; //The orbital elements at J2000
     public double M0; //The mean anomaly at J2000 - sort of a 7th orbital element
     public double A, B, C, a, b, c; //Constants for a planet's orbit
     public float plotScale; //Need plotting scale for calculating worldspace positions
@@ -80,7 +80,7 @@ public class PlanetInfo : MonoBehaviour
         double daysSinceJ2000;
         double SMA, e, n, w; //orbital elements
         double M/*current mean anomaly*/, E/*eccentric anomaly*/;
-        double vu/*true anomaly*/, r/*current distance to sun*/;
+        double nu/*true anomaly*/, r/*current distance to sun*/;
         double x, y, z;
 
         /*Get orbital elements from array************************/
@@ -91,7 +91,7 @@ public class PlanetInfo : MonoBehaviour
         //NOTE: We don't need I or OM because we've already utilised them in
         //     the constants A, B, C, a, b & c
 
-        /*Calculate vu and r************************************/
+        /*Calculate nu and r************************************/
         daysSinceJ2000 = JDay - 2451544.5;
         M = M0 + n*daysSinceJ2000; //(deg)
         while (M > 360)
@@ -105,14 +105,14 @@ public class PlanetInfo : MonoBehaviour
 
         E = calculateE(e, M); //(deg)
         E = toRadians(E); //(rad)
-        vu = 2 * Math.Atan(Math.Sqrt((1 + e) / (1 - e)) * Math.Tan(E/2)); //(rad)
+        nu = 2 * Math.Atan(Math.Sqrt((1 + e) / (1 - e)) * Math.Tan(E/2)); //(rad)
         r = SMA * (1 - e*Math.Cos(E)); //(AU)
 
         /*Compute x,y,z coordinates******************************/
         w = toRadians(w);
-        x = r*a*Math.Sin(A + w + vu) * plotScale; //(AU)
-        y = r*b*Math.Sin(B + w + vu) * plotScale; //(AU)
-        z = r*c*Math.Sin(C + w + vu) * plotScale; //(AU)
+        x = r*a*Math.Sin(A + w + nu) * plotScale; //(AU)
+        y = r*b*Math.Sin(B + w + nu) * plotScale; //(AU)
+        z = r*c*Math.Sin(C + w + nu) * plotScale; //(AU)
 
         /*Swap y & z for Unity positioning***********************/
         double tempZ = z;
