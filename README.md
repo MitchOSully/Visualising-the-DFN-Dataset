@@ -5,7 +5,7 @@ The scripts stored in this repository all play a part in operating the Unity pro
 
 ## To do
 * Provide a .exe version to download. (Requires setting up an installer).
-* Provide a Unity project to download, (without the DFN dataset ofc).
+* Provide a Unity project to download, (without the DFN dataset for IP reasons).
 
 ## Images
 The image below shows the standard output of the program. The sun is shown in the middle (not to scale) along with the planet orbit lines. Every white dot is a meteoroid in a bound orbit that was detected by the DFN.
